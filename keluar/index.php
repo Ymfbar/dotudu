@@ -18,7 +18,8 @@ include '../header.php';
     <tbody>
         <?php
         $no = 1;
-        $query = $koneksi->query("SELECT keluar.id, keluar.tanggal, data_barang.nama AS nama_barang, keluar.qty 
+        // Query diperbaiki untuk mengambil 'keterangan' dan urutan kolom disesuaikan
+        $query = $koneksi->query("SELECT keluar.id, keluar.tanggal, keluar.qty, keluar.keterangan, data_barang.nama AS nama_barang 
                                   FROM keluar 
                                   LEFT JOIN data_barang ON keluar.barang_id = data_barang.id 
                                   ORDER BY keluar.tanggal DESC");
@@ -26,10 +27,10 @@ include '../header.php';
         ?>
         <tr>
             <td><?= $no++ ?></td>
-            <td><?= htmlspecialchars($row['tanggal']) ?></td>
             <td><?= htmlspecialchars($row['nama_barang'] ?? '-') ?></td>
+            <td><?= htmlspecialchars($row['tanggal']) ?></td>
             <td><?= $row['qty'] ?></td>
-            <td><?= htmlspecialchars($row['keterangan']) ?></td>
+            <td><?= htmlspecialchars($row['keterangan'] ?? '-') ?></td>
             <td>
                 <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm">Edit</a>
                 <a href="hapus.php?id=<?= $row['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Hapus</a>
