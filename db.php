@@ -2,7 +2,7 @@
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db = "barang_db";
+$db = "dotudu_db";
 
 $koneksi = new mysqli($host, $user, $pass, $db);
 
