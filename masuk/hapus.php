@@ -9,7 +9,7 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 $id = intval($_GET['id']);
 
 // Ambil data barang masuk sebelum dihapus untuk penyesuaian stok
-$stmt = $koneksi->prepare("SELECT barang_id, jumlah FROM barang_masuk WHERE id = ?");
+$stmt = $koneksi->prepare("SELECT barang_id, jumlah FROM masuk WHERE id = ?");
 $stmt->bind_param("i", $id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -26,8 +26,8 @@ $jumlah = $data['jumlah'];
 
 $koneksi->begin_transaction();
 try {
-    // 1. Hapus dari barang_masuk
-    $stmt1 = $koneksi->prepare("DELETE FROM barang_masuk WHERE id = ?");
+    // 1. Hapus dari masuk
+    $stmt1 = $koneksi->prepare("DELETE FROM masuk WHERE id = ?");
     $stmt1->bind_param("i", $id);
     $stmt1->execute();
 

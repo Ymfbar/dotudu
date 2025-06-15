@@ -21,10 +21,10 @@ include '../header.php';
     <?php
     $no = 1;
     // Query diubah untuk mengambil 'no_seri'
-    $query = $koneksi->query("SELECT barang_masuk.id, barang_masuk.tanggal, barang_masuk.jumlah, barang_masuk.no_seri, barang_masuk.keterangan, data_barang.nama AS nama_barang 
-                              FROM barang_masuk 
-                              LEFT JOIN data_barang ON barang_masuk.barang_id = data_barang.id
-                              ORDER BY barang_masuk.tanggal DESC");
+    $query = $koneksi->query("SELECT masuk.id, masuk.tanggal, masuk.jumlah, masuk.no_seri, masuk.keterangan, data_barang.nama AS nama_barang 
+                              FROM masuk 
+                              LEFT JOIN data_barang ON masuk.barang_id = data_barang.id
+                              ORDER BY masuk.tanggal DESC");
     while ($row = $query->fetch_assoc()):
     ?>
     <tr>

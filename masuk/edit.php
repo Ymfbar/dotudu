@@ -9,7 +9,7 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 $id = intval($_GET['id']);
 
 // Ambil data lama
-$stmt = $koneksi->prepare("SELECT * FROM barang_masuk WHERE id = ?");
+$stmt = $koneksi->prepare("SELECT * FROM masuk WHERE id = ?");
 $stmt->bind_param("i", $id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $koneksi->query("UPDATE data_barang SET stok = stok - $jumlah_lama WHERE id = $barang_id_lama");
 
             // 2. Update data barang masuk (query diubah)
-            $stmt2 = $koneksi->prepare("UPDATE barang_masuk SET tanggal = ?, barang_id = ?, jumlah = ?, no_seri = ?, keterangan = ? WHERE id = ?");
+            $stmt2 = $koneksi->prepare("UPDATE masuk SET tanggal = ?, barang_id = ?, jumlah = ?, no_seri = ?, keterangan = ? WHERE id = ?");
             $stmt2->bind_param("siissi", $tanggal, $barang_id_baru, $jumlah_baru, $no_seri, $keterangan, $id);
             $stmt2->execute();
 

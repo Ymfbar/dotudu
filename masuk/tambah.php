@@ -14,8 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($barang_id && $jumlah > 0 && !empty($tanggal)) {
         $koneksi->begin_transaction();
         try {
-            // Insert ke tabel barang_masuk (query telah diubah)
-            $stmt1 = $koneksi->prepare("INSERT INTO barang_masuk (tanggal, barang_id, jumlah, no_seri, keterangan) VALUES (?, ?, ?, ?, ?)");
+            // Insert ke tabel masuk (query telah diubah)
+            $stmt1 = $koneksi->prepare("INSERT INTO masuk (tanggal, barang_id, jumlah, no_seri, keterangan) VALUES (?, ?, ?, ?, ?)");
             $stmt1->bind_param("siiss", $tanggal, $barang_id, $jumlah, $no_seri, $keterangan); // Bind parameter baru
             $stmt1->execute();
 
