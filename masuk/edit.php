@@ -26,25 +26,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tanggal = $_POST['tanggal'];
     $barang_id_baru = intval($_POST['barang_id']);
     $jumlah_baru = intval($_POST['jumlah']);
+    $no_seri = trim($_POST['no_seri']); // BARIS BARU: Mengambil data no_seri dari form
     $keterangan = trim($_POST['keterangan']);
 
     if ($barang_id_baru && $jumlah_baru > 0 && !empty($tanggal)) {
         $koneksi->begin_transaction();
         try {
             // 1. Kembalikan stok lama
-            $stmt1 = $koneksi->prepare("UPDATE data_barang SET stok = stok - ? WHERE id = ?");
-            $stmt1->bind_param("ii", $jumlah_lama, $barang_id_lama);
-            $stmt1->execute();
+            $koneksi->query("UPDATE data_barang SET stok = stok - $jumlah_lama WHERE id = $barang_id_lama");
 
-            // 2. Update data barang masuk
-            $stmt2 = $koneksi->prepare("UPDATE barang_masuk SET tanggal = ?, barang_id = ?, jumlah = ?, keterangan = ? WHERE id = ?");
-            $stmt2->bind_param("siisi", $tanggal, $barang_id_baru, $jumlah_baru, $keterangan, $id);
+            // 2. Update data barang masuk (query diubah)
+            $stmt2 = $koneksi->prepare("UPDATE barang_masuk SET tanggal = ?, barang_id = ?, jumlah = ?, no_seri = ?, keterangan = ? WHERE id = ?");
+            $stmt2->bind_param("siissi", $tanggal, $barang_id_baru, $jumlah_baru, $no_seri, $keterangan, $id);
             $stmt2->execute();
 
             // 3. Tambah stok baru
-            $stmt3 = $koneksi->prepare("UPDATE data_barang SET stok = stok + ? WHERE id = ?");
-            $stmt3->bind_param("ii", $jumlah_baru, $barang_id_baru);
-            $stmt3->execute();
+            $koneksi->query("UPDATE data_barang SET stok = stok + $jumlah_baru WHERE id = $barang_id_baru");
 
             $koneksi->commit();
             echo '<div class="alert alert-success container mt-4">Data berhasil diupdate. Stok telah disesuaikan.</div>';
@@ -76,7 +73,7 @@ $data_barang = $koneksi->query("SELECT id, nama FROM data_barang");
             <label for="barang_id" class="form-label">Nama Barang</label>
             <select class="form-control" name="barang_id" id="barang_id" required>
                 <option value="">-- Pilih Barang --</option>
-                <?php mysqli_data_seek($data_barang, 0); // Reset pointer result set ?>
+                <?php mysqli_data_seek($data_barang, 0); ?>
                 <?php while ($row = $data_barang->fetch_assoc()): ?>
                     <option value="<?= $row['id'] ?>" <?= ($data['barang_id'] == $row['id']) ? 'selected' : '' ?>>
                         <?= htmlspecialchars($row['nama']) ?>
@@ -87,6 +84,10 @@ $data_barang = $koneksi->query("SELECT id, nama FROM data_barang");
         <div class="mb-3">
             <label for="jumlah" class="form-label">Jumlah</label>
             <input type="number" class="form-control" name="jumlah" id="jumlah" value="<?= htmlspecialchars($data['jumlah']) ?>" min="1" required>
+        </div>
+        <div class="mb-3">
+            <label for="no_seri" class="form-label">No Seri</label>
+            <input type="text" class="form-control" name="no_seri" id="no_seri" value="<?= htmlspecialchars($data['no_seri'] ?? '') ?>">
         </div>
         <div class="mb-3">
             <label for="keterangan" class="form-label">Keterangan</label>

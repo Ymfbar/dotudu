@@ -8,6 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tanggal = $_POST['tanggal'];
     $barang_id = intval($_POST['barang_id']);
     $qty = intval($_POST['qty']);
+    $no_seri = trim($_POST['no_seri']); // BARIS BARU: Mengambil data no_seri dari form
     $keterangan = trim($_POST['keterangan']);
 
     if ($barang_id && $qty > 0 && !empty($tanggal)) {
@@ -18,9 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stok_saat_ini >= $qty) {
             $koneksi->begin_transaction();
             try {
-                // Insert ke tabel keluar
-                $stmt1 = $koneksi->prepare("INSERT INTO keluar (tanggal, barang_id, qty, keterangan) VALUES (?, ?, ?, ?)");
-                $stmt1->bind_param("siis", $tanggal, $barang_id, $qty, $keterangan);
+                // Insert ke tabel keluar (query telah diubah)
+                $stmt1 = $koneksi->prepare("INSERT INTO keluar (tanggal, barang_id, qty, no_seri, keterangan) VALUES (?, ?, ?, ?, ?)");
+                $stmt1->bind_param("siiss", $tanggal, $barang_id, $qty, $no_seri, $keterangan); // Bind parameter baru
                 $stmt1->execute();
 
                 // Kurangi stok di data_barang
@@ -67,6 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="mb-3">
             <label for="qty" class="form-label">Jumlah</label>
             <input type="number" class="form-control" name="qty" id="qty" min="1" required>
+        </div>
+        <div class="mb-3">
+            <label for="no_seri" class="form-label">No Seri</label>
+            <input type="text" class="form-control" name="no_seri" id="no_seri">
         </div>
         <div class="mb-3">
             <label for="keterangan" class="form-label">Keterangan</label>

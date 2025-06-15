@@ -24,9 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tanggal = $_POST['tanggal'];
     $barang_id_baru = intval($_POST['barang_id']);
     $qty_baru = intval($_POST['qty']);
+    $no_seri = trim($_POST['no_seri']); // BARIS BARU: Mengambil data no_seri dari form
     $keterangan = trim($_POST['keterangan']);
 
-    // Cek stok jika mengedit qty
+    // Cek stok
     $cek_stok_res = $koneksi->query("SELECT stok FROM data_barang WHERE id = $barang_id_baru");
     $stok_saat_ini = $cek_stok_res->fetch_assoc()['stok'];
 
@@ -37,10 +38,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             // 1. Kembalikan stok lama
             $koneksi->query("UPDATE data_barang SET stok = stok + $qty_lama WHERE id = $barang_id_lama");
-            // 2. Update data keluar
-            $stmt = $koneksi->prepare("UPDATE keluar SET tanggal=?, barang_id=?, qty=?, keterangan=? WHERE id=?");
-            $stmt->bind_param("siisi", $tanggal, $barang_id_baru, $qty_baru, $keterangan, $id);
+            
+            // 2. Update data keluar (query diubah)
+            $stmt = $koneksi->prepare("UPDATE keluar SET tanggal=?, barang_id=?, qty=?, no_seri=?, keterangan=? WHERE id=?");
+            $stmt->bind_param("siissi", $tanggal, $barang_id_baru, $qty_baru, $no_seri, $keterangan, $id);
             $stmt->execute();
+            
             // 3. Kurangi stok baru
             $koneksi->query("UPDATE data_barang SET stok = stok - $qty_baru WHERE id = $barang_id_baru");
             
@@ -69,14 +72,19 @@ $data_barang = $koneksi->query("SELECT id, nama FROM data_barang");
         <div class="mb-3">
             <label for="barang_id" class="form-label">Nama Barang</label>
             <select class="form-control" name="barang_id" required>
+                <?php mysqli_data_seek($data_barang, 0); ?>
                 <?php while ($row = $data_barang->fetch_assoc()): ?>
-                <option value="<?= $row['id'] ?>" <?= ($data['barang_id'] == $row['id']) ? 'selected' : '' ?>><?= $row['nama'] ?></option>
+                <option value="<?= $row['id'] ?>" <?= ($data['barang_id'] == $row['id']) ? 'selected' : '' ?>><?= htmlspecialchars($row['nama']) ?></option>
                 <?php endwhile; ?>
             </select>
         </div>
         <div class="mb-3">
             <label for="qty" class="form-label">Jumlah</label>
             <input type="number" class="form-control" name="qty" value="<?= $data['qty'] ?>" required>
+        </div>
+        <div class="mb-3">
+            <label for="no_seri" class="form-label">No Seri</label>
+            <input type="text" class="form-control" name="no_seri" value="<?= htmlspecialchars($data['no_seri'] ?? '') ?>">
         </div>
         <div class="mb-3">
             <label for="keterangan" class="form-label">Keterangan</label>

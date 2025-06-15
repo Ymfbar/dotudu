@@ -8,14 +8,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tanggal = $_POST['tanggal'];
     $barang_id = intval($_POST['barang_id']);
     $jumlah = intval($_POST['jumlah']);
+    $no_seri = trim($_POST['no_seri']); // BARIS BARU: Mengambil data no_seri dari form
     $keterangan = trim($_POST['keterangan']);
 
     if ($barang_id && $jumlah > 0 && !empty($tanggal)) {
         $koneksi->begin_transaction();
         try {
-            // Insert ke tabel barang_masuk
-            $stmt1 = $koneksi->prepare("INSERT INTO barang_masuk (tanggal, barang_id, jumlah, keterangan) VALUES (?, ?, ?, ?)");
-            $stmt1->bind_param("siis", $tanggal, $barang_id, $jumlah, $keterangan);
+            // Insert ke tabel barang_masuk (query telah diubah)
+            $stmt1 = $koneksi->prepare("INSERT INTO barang_masuk (tanggal, barang_id, jumlah, no_seri, keterangan) VALUES (?, ?, ?, ?, ?)");
+            $stmt1->bind_param("siiss", $tanggal, $barang_id, $jumlah, $no_seri, $keterangan); // Bind parameter baru
             $stmt1->execute();
 
             // Update stok di data_barang
@@ -59,6 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="mb-3">
             <label for="jumlah" class="form-label">Jumlah</label>
             <input type="number" class="form-control" name="jumlah" id="jumlah" min="1" required>
+        </div>
+        <div class="mb-3">
+            <label for="no_seri" class="form-label">No Seri</label>
+            <input type="text" class="form-control" name="no_seri" id="no_seri">
         </div>
         <div class="mb-3">
             <label for="keterangan" class="form-label">Keterangan</label>

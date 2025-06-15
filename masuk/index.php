@@ -13,23 +13,26 @@ include '../header.php';
       <th>Nama Barang</th>
       <th>Tanggal Masuk</th>
       <th>Jumlah</th>
-      <th>Keterangan</th>
+      <th>No Seri</th> <th>Keterangan</th>
       <th>Aksi</th>
     </tr>
   </thead>
   <tbody>
     <?php
     $no = 1;
-    $query = $koneksi->query("SELECT barang_masuk.id, barang_masuk.tanggal, barang_masuk.jumlah, data_barang.nama AS nama_barang 
+    // Query diubah untuk mengambil 'no_seri'
+    $query = $koneksi->query("SELECT barang_masuk.id, barang_masuk.tanggal, barang_masuk.jumlah, barang_masuk.no_seri, barang_masuk.keterangan, data_barang.nama AS nama_barang 
                               FROM barang_masuk 
-                              LEFT JOIN data_barang ON barang_masuk.barang_id = data_barang.id");
+                              LEFT JOIN data_barang ON barang_masuk.barang_id = data_barang.id
+                              ORDER BY barang_masuk.tanggal DESC");
     while ($row = $query->fetch_assoc()):
     ?>
     <tr>
       <td><?= $no++ ?></td>
       <td><?= htmlspecialchars($row['nama_barang']) ?></td>
-      <td><?= htmlspecialchars($row['tanggal']) ?></td>
+      <td><?= htmlspecialchars(date('d-m-Y', strtotime($row['tanggal']))) ?></td>
       <td><?= $row['jumlah'] ?></td>
+      <td><?= htmlspecialchars($row['no_seri'] ?? '-') ?></td> <td><?= htmlspecialchars($row['keterangan'] ?? '-') ?></td>
       <td>
         <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm">Edit</a>
         <a href="hapus.php?id=<?= $row['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Hapus</a>
