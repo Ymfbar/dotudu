@@ -10,12 +10,12 @@ $id = intval($_GET['id']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nama = trim($_POST['nama']);
-    $telepon = trim($_POST['telepon']);
+    $kontak = trim($_POST['kontak']);
     $alamat = trim($_POST['alamat']);
 
-    if (!empty($nama) && !empty($telepon) && !empty($alamat)) {
-        $stmt = $koneksi->prepare("UPDATE supplier SET nama = ?, telepon = ?, alamat = ? WHERE id = ?");
-        $stmt->bind_param("sssi", $nama, $telepon, $alamat, $id);
+    if (!empty($nama) && !empty($kontak) && !empty($alamat)) {
+        $stmt = $koneksi->prepare("UPDATE supplier SET nama = ?, kontak = ?, alamat = ? WHERE id = ?");
+        $stmt->bind_param("sssi", $nama, $kontak, $alamat, $id);
 
         if ($stmt->execute()) {
             echo '<div class="alert alert-success container mt-4">Data berhasil diupdate.</div>';
@@ -54,8 +54,8 @@ if (!$data) {
             <input type="text" class="form-control" name="nama" id="nama" value="<?= htmlspecialchars($data['nama']) ?>" required>
         </div>
         <div class="mb-3">
-            <label for="telepon" class="form-label">Telepon</label>
-            <input type="text" class="form-control" name="telepon" id="telepon" value="<?= htmlspecialchars($data['telepon']) ?>" required>
+            <label for="kontak" class="form-label">Telepon</label>
+            <input type="text" class="form-control" name="kontak" id="kontak" value="<?= htmlspecialchars($data['kontak']) ?>" required>
         </div>
         <div class="mb-3">
             <label for="alamat" class="form-label">Alamat</label>

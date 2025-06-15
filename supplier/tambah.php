@@ -4,13 +4,13 @@ include '../header.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nama = trim($_POST['nama']);
-    $telepon = trim($_POST['telepon']);
+    $kontak = trim($_POST['kontak']);
     $alamat = trim($_POST['alamat']);
 
-    if (!empty($nama) && !empty($telepon) && !empty($alamat)) {
+    if (!empty($nama) && !empty($kontak) && !empty($alamat)) {
         // Ganti 'supplier' dengan nama tabel Anda jika berbeda
-        $stmt = $koneksi->prepare("INSERT INTO supplier (nama, telepon, alamat) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $nama, $telepon, $alamat);
+        $stmt = $koneksi->prepare("INSERT INTO supplier (nama, kontak, alamat) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $nama, $kontak, $alamat);
 
         if ($stmt->execute()) {
             echo '<div class="alert alert-success container mt-4">Data supplier berhasil ditambahkan.</div>';
@@ -38,8 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="text" class="form-control" name="nama" id="nama" required>
         </div>
         <div class="mb-3">
-            <label for="telepon" class="form-label">Telepon</label>
-            <input type="text" class="form-control" name="telepon" id="telepon" required>
+            <label for="kontak" class="form-label">Telepon</label>
+            <input type="text" class="form-control" name="kontak" id="kontak" required>
         </div>
         <div class="mb-3">
             <label for="alamat" class="form-label">Alamat</label>

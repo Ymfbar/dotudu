@@ -26,7 +26,7 @@ include '../header.php';
         <tr>
             <td><?= $no++ ?></td>
             <td><?= htmlspecialchars($row['nama']) ?></td>
-            <td><?= htmlspecialchars($row['telepon']) ?></td>
+            <td><?= htmlspecialchars($row['kontak']) ?></td>
             <td><?= htmlspecialchars($row['alamat']) ?></td>
             <td>
                 <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm">Edit</a>
