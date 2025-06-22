@@ -1,6 +1,16 @@
 <?php
 include "../db.php";
 session_start();
+
+// Cegah cache agar tidak bisa diakses dengan tombol back
+header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
+header("Pragma: no-cache"); // HTTP 1.0
+header("Expires: 0");
+
+if (isset($_SESSION['user_id'])) {
+    header("Location: /dotudu/");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
