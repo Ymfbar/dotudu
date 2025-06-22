@@ -1,12 +1,10 @@
 <?php
-include "../db.php";
 session_start();
-
-// Jika sudah login, alihkan ke halaman utama
 if (isset($_SESSION['user_id'])) {
     header("Location: /dotudu/");
     exit();
 }
+include "../db.php";
 ?>
 <!DOCTYPE html>
 <html>
@@ -20,8 +18,7 @@ if (isset($_SESSION['user_id'])) {
             min-height: 100vh;
         }
         .login-box {
-            background-color: #f8f9fa; /* abu-abu terang, sama seperti index.php */
-            padding: 30px;
+            background-color:rgb(187, 187, 187);
             border-radius: 12px;
             box-shadow: 0 0 15px rgba(0,0,0,0.2);
             width: 100%;

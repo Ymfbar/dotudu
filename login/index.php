@@ -1,17 +1,21 @@
 <?php
-include "../db.php";
 session_start();
-
-// Cegah cache agar tidak bisa diakses dengan tombol back
-header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
-header("Pragma: no-cache"); // HTTP 1.0
-header("Expires: 0");
-
 if (isset($_SESSION['user_id'])) {
     header("Location: /dotudu/");
     exit();
+
+    
+
+
 }
+// Cegah caching halaman login
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
+include "../db.php";
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>

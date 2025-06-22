@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 // Periksa apakah pengguna sudah login
 if (!isset($_SESSION['user_id'])) {
     // Jika belum login, alihkan ke halaman login
