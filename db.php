@@ -1,8 +1,8 @@
 <?php
-$host = "sql303.infinityfree.com";       // Host dari cPanel
-$user = "if0_39295605";                  // Username MySQL
-$pass = "kelompokbarang";               // Password MySQL
-$db   = "if0_39295605_dotudu_db";        // Nama database di InfinityFree
+$host = "localhost";
+$user = "root";
+$pass = "";
+$db = "dotudu_db";
 
 $koneksi = new mysqli($host, $user, $pass, $db);
 
