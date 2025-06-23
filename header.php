@@ -1,10 +1,8 @@
 <?php
 session_start();
 
-
 // Periksa apakah pengguna sudah login
 if (!isset($_SESSION['user_id'])) {
-    // Jika belum login, alihkan ke halaman login
     header("Location: /dotudu/login/index.php");
     exit();
 }
@@ -63,7 +61,6 @@ if (!isset($_SESSION['user_id'])) {
       background: #f8f9fa;
     }
 
-    /* Optional: icons or placeholders when collapsed */
     .sidebar a span {
       display: inline-block;
       width: 100%;
@@ -88,8 +85,13 @@ if (!isset($_SESSION['user_id'])) {
   <a href="/dotudu/supplier/"><i class="bi bi-truck"></i> <span class="text">Supplier</span></a>
   <a href="/dotudu/masuk/"><i class="bi bi-box-arrow-in-down"></i> <span class="text">Barang Masuk</span></a>
   <a href="/dotudu/keluar/"><i class="bi bi-box-arrow-up"></i> <span class="text">Barang Keluar</span></a>
-  <a href="/dotudu/logout.php/"><i class="bi bi-arrow-left-square"></i> <span class="text">Log Out</span></a>
-
+  <a href="/dotudu/logout.php"><i class="bi bi-arrow-left-square"></i> <span class="text">Log Out</span></a>
 </div>
 
 <div class="main">
+
+  <?php if (isset($_SESSION['username'])): ?>
+    <div class="text-end text-muted mb-3" style="font-size: 0.9rem;">
+      <i class="bi bi-person-circle"></i> Login sebagai: <strong><?= htmlspecialchars($_SESSION['username']) ?></strong>
+    </div>
+  <?php endif; ?>
